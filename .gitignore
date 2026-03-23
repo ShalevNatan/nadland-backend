@@ -1,20 +1,12 @@
 # Terraform
 .terraform/
+*.tfplan
+tfplan
 *.tfstate
 *.tfstate.backup
-.terraform.lock.hcl
-tfplan
+.terraform.tfstate
 
-# Python
-__pycache__/
-*.pyc
-*.pyo
+# Secrets
+*.pem
+*.key
 .env
-venv/
-.pytest_cache/
-.coverage
-htmlcov/
-
-# General
-.DS_Store
-*.log
