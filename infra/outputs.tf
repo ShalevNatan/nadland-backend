@@ -27,3 +27,15 @@ output "cognito_client_id" {
   description = "Cognito App Client ID"
   value       = module.cognito.client_id
 }
+
+output "lambda_calculate_name" {
+  value = module.lambda_calculate.function_name
+}
+
+output "lambda_get_history_name" {
+  value = module.lambda_get_history.function_name
+}
+
+output "lambda_health_name" {
+  value = module.lambda_health.function_name
+}
