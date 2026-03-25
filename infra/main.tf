@@ -33,4 +33,9 @@ resource "aws_budgets_budget" "monthly" {
     subscriber_email_addresses = [var.alert_email]
   }
 }
-# nadland infrastructure
+
+module "dynamodb" {
+  source      = "./modules/dynamodb"
+  app_name    = var.app_name
+  environment = var.environment
+}
