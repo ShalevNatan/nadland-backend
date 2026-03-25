@@ -13,9 +13,9 @@ on:
       - 'infra/**'
 
 permissions:
-  id-token: write   # required for OIDC
+  id-token: write
   contents: read
-  pull-requests: write  # required to post plan as PR comment
+  pull-requests: write
 
 jobs:
   terraform:
@@ -38,7 +38,7 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
         with:
-          terraform_version: "1.6.0"
+          terraform_version: "1.10.0"
 
       - name: Terraform Format Check
         run: terraform fmt -check -recursive
