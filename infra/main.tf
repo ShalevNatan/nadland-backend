@@ -39,3 +39,9 @@ module "dynamodb" {
   app_name    = var.app_name
   environment = var.environment
 }
+
+module "cognito" {
+  source      = "./modules/cognito"
+  app_name    = var.app_name
+  environment = var.environment
+}
