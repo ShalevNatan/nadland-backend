@@ -39,3 +39,8 @@ output "lambda_get_history_name" {
 output "lambda_health_name" {
   value = module.lambda_health.function_name
 }
+
+output "api_endpoint" {
+  description = "API Gateway endpoint URL"
+  value       = module.api_gateway.api_endpoint
+}
