@@ -65,7 +65,7 @@ resource "aws_lambda_function" "main" {
   environment {
     variables = {
       ENVIRONMENT    = var.environment
-      DYNAMODB_TABLE = var.dynamodb_table_name
+      TABLE_NAME = var.dynamodb_table_name
     }
   }
 
