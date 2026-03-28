@@ -1,0 +1,73 @@
+# .github/workflows/backend-ci.yml
+name: Backend CI
+
+on:
+  push:
+    branches: [main]
+    paths: ["lambda/**"]
+  pull_request:
+    branches: [main]
+    paths: ["lambda/**"]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install test dependencies
+        run: pip install pytest pytest-cov "moto[dynamodb]" boto3
+
+      - name: Run tests
+        run: pytest lambda/tests/ --cov=lambda --cov-report=term-missing --cov-fail-under=80
+
+  deploy:
+    needs: test
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    strategy:
+      matrix:
+        include:
+          - name: nadland-calculate-prod
+            path: lambda/calculate
+          - name: nadland-get-history-prod
+            path: lambda/get_history
+          - name: nadland-health-prod
+            path: lambda/health
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::361769559779:role/github-actions-terraform-role
+          aws-region: us-east-1
+
+      - name: Build package — ${{ matrix.name }}
+        working-directory: ${{ matrix.path }}
+        run: |
+          mkdir -p package
+          if [ -f requirements.txt ]; then
+            pip install -r requirements.txt -t package/
+          fi
+          cp *.py package/
+          cd package && zip -r ../function.zip .
+
+      - name: Deploy — ${{ matrix.name }}
+        working-directory: ${{ matrix.path }}
+        run: |
+          aws lambda update-function-code \
+            --function-name ${{ matrix.name }} \
+            --zip-file fileb://function.zip \
+            --region us-east-1
+          aws lambda wait function-updated \
+            --function-name ${{ matrix.name }} \
+            --region us-east-1
