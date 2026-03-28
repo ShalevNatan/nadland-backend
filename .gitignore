@@ -10,3 +10,14 @@ tfplan
 *.pem
 *.key
 .env
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.coverage
+htmlcov/
+.pytest_cache/
+*.egg-info/
+dist/
+build/
