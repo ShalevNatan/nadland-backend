@@ -1,0 +1,25 @@
+global:
+  domain: argocd.shalevhomelab.duckdns.org
+
+configs:
+  params:
+    server.insecure: true  # TLS terminated at Traefik, not ArgoCD itself
+
+server:
+  ingress:
+    enabled: false
+    ingressClassName: traefik
+    hostname: argocd.shalevhomelab.duckdns.org
+    tls: true
+
+repoServer:
+  tolerations: []
+
+applicationSet:
+  tolerations: []
+
+notifications:
+  enabled: false  # Not needed for portfolio
+
+dex:
+  enabled: false  # Disabling SSO for now, using admin password

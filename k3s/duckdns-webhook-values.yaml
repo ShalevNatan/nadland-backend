@@ -1,0 +1,20 @@
+certManager:
+  namespace: kube-system
+  serviceAccountName: cert-manager
+
+groupName: acme.shalevhomelab.duckdns.org
+
+token:
+  value: "85a33482-e64f-40c6-b54c-7b194720c386"
+
+clusterIssuer:
+  email: shalev.natan030@gmail.com
+  production:
+    create: true
+  staging:
+    create: true
+
+image:
+  repository: csp33/cert-manager-duckdns-webhook
+  tag: latest
+  pullPolicy: IfNotPresent
